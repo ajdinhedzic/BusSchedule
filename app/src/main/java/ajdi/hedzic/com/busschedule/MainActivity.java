@@ -76,7 +76,7 @@ public class MainActivity extends ActionBarActivity {
             Elements hawkeyeParkTimes = doc.getElementsByAttributeValue("data-stop-name", "Hawkeye Park & Ride");
             hawkeyeParkSchedule.setText(hawkeyeParkTimes.text());
 
-            Elements mercyTimes = doc.getElementsByAttributeValue("data-stop-name", "Hawkeye Park & Ride");
+            Elements mercyTimes = doc.getElementsByAttributeValue("data-stop-name", "Mercy North Park & Ride");
             mercySchedule.setText(mercyTimes.text());
 
             Elements grandTimes = doc.getElementsByAttributeValue("data-stop-name", "Grand ave & 7th St");
