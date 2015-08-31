@@ -6,28 +6,30 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 
 public class MainActivity extends ActionBarActivity {
 
-    private TextView hawkeyeParkSchedule;
-    private TextView mercySchedule;
-    private TextView grandSchedule;
-    private TextView locustSchedule;
+    private LinearLayout hawkeyeParkSchedule;
+    private LinearLayout mercySchedule;
+    private LinearLayout grandSchedule;
+    private LinearLayout locustSchedule;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        hawkeyeParkSchedule = (TextView) findViewById(R.id.hawkeyeParkSchedule);
-        mercySchedule = (TextView) findViewById(R.id.mercySchedule);
-        grandSchedule = (TextView) findViewById(R.id.grandSchedule);
-        locustSchedule = (TextView) findViewById(R.id.locustSchedule);
+        hawkeyeParkSchedule = (LinearLayout) findViewById(R.id.hawkeyeParkColumn);
+        mercySchedule = (LinearLayout) findViewById(R.id.mercyColumn);
+        grandSchedule = (LinearLayout) findViewById(R.id.grandColumn);
+        locustSchedule = (LinearLayout) findViewById(R.id.locustColumn);
         new FetchSchedule().execute();
     }
 
@@ -74,19 +76,25 @@ public class MainActivity extends ActionBarActivity {
         @Override
         protected void onPostExecute(Document doc) {
             Elements hawkeyeParkTimes = doc.getElementsByAttributeValue("data-stop-name", "Hawkeye Park & Ride");
-            hawkeyeParkSchedule.setText(hawkeyeParkTimes.text());
+            createViewWithTimes(hawkeyeParkTimes, hawkeyeParkSchedule);
 
             Elements mercyTimes = doc.getElementsByAttributeValue("data-stop-name", "Mercy North Park & Ride");
-            mercySchedule.setText(mercyTimes.text());
+            createViewWithTimes(mercyTimes, mercySchedule);
 
             Elements grandTimes = doc.getElementsByAttributeValue("data-stop-name", "Grand ave & 7th St");
-            grandSchedule.setText(grandTimes.text());
+            createViewWithTimes(grandTimes, grandSchedule);
 
             Elements locustTimes = doc.getElementsByAttributeValue("data-stop-name", "Locust ave & 7th St");
-            locustSchedule.setText(locustTimes.text());
+            createViewWithTimes(locustTimes, locustSchedule);
+        }
 
+        private void createViewWithTimes(Elements stopTimes, LinearLayout stopToAddTimes) {
+            for (Element time : stopTimes) {
+                TextView textView = new TextView(getApplicationContext());
+                textView.setText(time.text());
+                stopToAddTimes.addView(textView);
+            }
         }
     }
-
 
 }
